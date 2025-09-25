@@ -1,0 +1,16 @@
+# include <stdio.h>
+
+int main(){
+    int cislo;
+    printf("Zadej kladne trimistne sude cislo:");
+    scanf("%d", &cislo);
+    
+    while(cislo % 2 != 0 || cislo <= 0 || cislo < 99 || cislo > 999 ){
+        printf("Chyba!\n");
+        printf("Zadej cislo jeste jednou!:");
+        scanf("%d", &cislo);
+        
+    }
+    printf("Ano, spravne");
+    return 0;
+}
