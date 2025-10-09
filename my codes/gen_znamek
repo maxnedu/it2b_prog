@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+int main() {
+    int pole[10];
+    int soucet = 0;
+    srand(time(NULL)); 
+    for(int i = 0; i < 10; i++){
+        pole[i] = rand() % 5 + 1;
+        soucet = soucet + pole[i];
+    }
+    printf("Prumer znamek je:%d\n", soucet / 10);
+    int nejlepsi_znamka = 6;
+    int nejhorsi_znamka = 0;
+    for(int j = 0; j < 10; j++ ){
+        if(nejlepsi_znamka > pole[j] ){
+           nejlepsi_znamka = pole[j];
+        }
+        if(nejhorsi_znamka < pole[j] ){
+            nejhorsi_znamka = pole[j];
+        }
+    }
+    printf("Nejlepsi znamka je:%d\n", nejlepsi_znamka);
+    printf("Nejhorsi znamka je:%d", nejhorsi_znamka);
+
+    return 0;
+}
