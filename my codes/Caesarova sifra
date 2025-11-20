@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str [40];
+    
+    printf("Zadej slovo:");
+    scanf(" %39s", str);
+    
+    int delka_stringu = strlen(str);
+    
+    int delka_sifru;
+    printf("Zadej delku sifru:");
+    scanf("%d", &delka_sifru);
+    
+    for(int i = 0; i < delka_stringu; i++){
+        
+        str[i] = str[i] + delka_sifru;
+        
+       if(str[i] >= 'z'){
+            str[i] = 96 + (delka_sifru - ('z' - str[i]) - 3);
+       }
+    }
+    printf("%s", str);
+
+    return 0;
+}
