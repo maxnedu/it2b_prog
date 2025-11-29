@@ -1,0 +1,43 @@
+#include <string.h>
+#include <stdio.h>
+
+int main() {
+    char slovo[] = "robot";
+    char pokus[40];
+    int na_spat = 0;
+
+    printf("Hadej slovo: ");
+    scanf("%39s", pokus);
+
+    while(strcmp(slovo, pokus) != 0) {
+
+        for (int i = 0; i < 5; i++) {
+            na_spat = 0; // важно обнулять в начале каждого символа!
+
+            if (pokus[i] == slovo[i]) {
+                printf("Pismeno %c je na svem miste\n", pokus[i]);
+                continue;
+            }
+
+            // проверка: есть ли буква в слове
+            for (int j = 0; j < 5; j++) {
+                if (slovo[j] == pokus[i]) {
+                    na_spat++;
+                }
+            }
+
+            if (na_spat > 0) {
+                printf("Pismeno %c neni na svem miste, ale vyskytuje se ve slove %d krat\n",
+                       pokus[i], na_spat);
+            } else {
+                printf("Pismeno %c neni ve slove\n", pokus[i]);
+            }
+        }
+
+        printf("Hadej slovo: ");
+        scanf("%39s", pokus);
+    }
+
+    printf("Uhadl jsi!\n");
+    return 0;
+}
