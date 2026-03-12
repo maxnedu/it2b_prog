@@ -1,35 +1,40 @@
 class Program
 {
-
-    static bool StejnaCisla(int[] pole)
+    static bool StejnaCisla(double[] pole)
     {
-        bool stejny = false;
-        int i = 0;
-        
-
-        while(stejny)
+        for(int i = 0; i < pole.Length; i++)
         {
-            
-            
             if(pole[i] == pole[i + 1])
-            {
-                return true;
-            }
-            i++;
-            if(i > pole.Length)
             {
                 return true;
             }
         }
 
         
+        return false;
     }
+
     static void Main()
     {
-        int[] pole = { 1, 2, 3, 4, 4, 6};
-        bool x = StejnaCisla(pole);
-        Console.WriteLine(x);
+        double[] pole = new double[10];
+
+        for(int i = 0; i < pole.Length;i++)
+        {
+            Console.WriteLine("Write first number: ");
+            pole[i] = double.Parse(Console.ReadLine());
+        }
+
+        bool Jestejny = StejnaCisla(pole);
+
+        if(Jestejny)
+        {
+            Console.WriteLine(Jestejny);
+        }else
+        {
+            Console.WriteLine(!Jestejny);
+        }
     }
+}
     
         
 
