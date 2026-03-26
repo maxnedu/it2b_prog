@@ -1,3 +1,4 @@
+
 class Program
 {
     static void Email(string email)
@@ -5,27 +6,26 @@ class Program
         int pocet = 0;
 
 
-        foreach (char x in email)
+        for(int i = 0; i < email.Length - 1; i++)
         {
-            if (x == '@')
+            if(email[i] == '@' && email[i + 1] == '.' )
             {
                 pocet++;
             }
-        }
-        if (pocet > 0)
+        } if ( pocet > 0 )
         {
             Console.WriteLine("Je to email");
-        }
-        else
+        } else
         {
             Console.WriteLine("Neni to email");
         }
+        
     }
 
     static void Main()
     {
        
-        Email("1234@gmail");
+        Email("maxndu@.gmail");
 
     }
 }
