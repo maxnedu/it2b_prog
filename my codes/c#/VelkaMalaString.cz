@@ -1,0 +1,37 @@
+class Program
+{
+    
+    static void VicMin(string zprava, char x)
+    {
+        int velka = 0, mala = 0;
+        foreach(char c in zprava)
+        {
+            if (char.ToUpper(c) == char.ToUpper(x))
+            {
+                if (char.IsUpper(c))
+                {
+                    velka++;
+                } else if(char.IsLower(c))
+                {
+                    mala++;
+                }
+            }
+        }
+        if(velka > mala)
+        {
+            Console.WriteLine($"Vice je velkych:{velka}");
+        } else if (velka < mala) 
+        {
+            Console.WriteLine($"Vice je malych:{mala}");
+        }else
+        {
+            Console.WriteLine($"Rovnaji se, velkych je:{velka} a malych: {mala}");
+        }
+    }
+
+    static void Main()
+    {
+        VicMin("BroWhatsIsOnYourMIndIifucIii", 'i');
+
+    }
+}
