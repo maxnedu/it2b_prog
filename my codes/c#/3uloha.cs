@@ -3,13 +3,14 @@ class Program
     static void Cisla(int[] pole, int[] pole2)
     {
         List<int> ints = new List<int>();
-        for(int i = 0; i < pole2.Length; i++)
+        for(int i = 0; i < pole.Length; i++)
         {
-            if ()
+            if (!pole2.Contains(pole[i]))
             {
                 ints.Add(pole[i]);
             }
         }
+        
         ints.Sort();
         foreach(int i in ints)
         {
