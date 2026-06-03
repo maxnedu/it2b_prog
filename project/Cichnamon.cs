@@ -9,24 +9,43 @@ class Cichnamon
     public Attack SpecialAttack { get; set; }
 
 
-    public Cichnamon(string name, int health, int attackBonus)
+    public Cichnamon(string name, int health, int attackBonus, Attack baseAttack, Attack specialAttack)
     {
         Name = name;
         Health = health;
+        MaxHealth = health;
         AttackBonus = attackBonus;
+        BaseAttack = baseAttack;
+        SpecialAttack = specialAttack;
     }
+
     public bool IsAlive()
     {
-        if(Health <= 0)
+        if(Health > 0)
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
-    public void PrintInfo()
+
+    public void TakeDamage(int damage)
     {
-        Console.WriteLine("Basic character stats:");
-        Console.WriteLine("The name is: " + Name + "Health is: " + Health);
-        BaseAttack.PrintInfo();
+        Health -= damage;
+
+        if (Health < 0)
+        {
+            Health = 0;
+        }
     }
+
+    public void Heal(int amount)
+    {
+        Health += amount;
+
+        if (Health > MaxHealth)
+        {
+            Health = MaxHealth;
+        }
+    }
+
 }
