@@ -2,16 +2,18 @@ public class Texts
 {
     private string intro = @"
      ====================================
-          WELCOME TO CICHNAMON ARENA
+              POLITMON ARENA
      ====================================
 
-     Here, small creatures solve
-     their problems with violence.
+     Welcome to PolitMon Arena!
+
+     Here, famous politicians solve
+     their problems in turn-based battles.
 
      Choose your fighter
      and prove that you are
-     the best trainer!
-";
+     the strongest political trainer!";
+
     public void TypeIntro()
     {
         foreach(char c in intro)
