@@ -1,4 +1,4 @@
-ss PolitMon
+class PolitMon
 {
     public string Name { get; set; }
 
