@@ -8,6 +8,8 @@ class PolitMon
 
     public Attack BaseAttack { get; set; }
     public Attack SpecialAttack { get; set; }
+    public bool HealUse { get; set; }
+    public bool SpecialUse { get; set; }
 
     public PolitMon(string name, int health, int attackBonus, Attack baseAttack, Attack specialAttack)
     {
@@ -17,6 +19,9 @@ class PolitMon
         AttackBonus = attackBonus;
         BaseAttack = baseAttack;
         SpecialAttack = specialAttack;
+        HealUse = false;
+        SpecialUse = false;
+        
     }
 
     public bool IsAlive()
