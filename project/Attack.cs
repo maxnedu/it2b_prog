@@ -1,4 +1,5 @@
 
+
 class Attack
 {
     public string Name { get; set; }
@@ -14,6 +15,8 @@ class Attack
     public void PrintInfo()
     {
         Console.WriteLine("Basic info: ");
+        Console.WriteLine("Name" + " - " + Name);
+        Console.WriteLine("Damage" + " - " + Damage);
         Console.WriteLine(Info);
     }
     
