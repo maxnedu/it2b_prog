@@ -12,7 +12,7 @@ public class Texts
 
      Choose your fighter
      and prove that you are
-     the strongest political trainer!";
+     the strongest politician!";
 
     public void TypeIntro()
     {
