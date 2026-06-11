@@ -1,14 +1,66 @@
 class Program
 {
+    static Random random = new Random();
     static void Main()
     {
-        Random random = new Random();
-
         Texts texts = new Texts();
+
         Console.ForegroundColor = ConsoleColor.Red;
         texts.TypeIntro();
         Console.ResetColor();
 
+        Coach playerCoach = CreateCoach();
+
+        ChoosePlayer(playerCoach);
+
+        PolitMon player = playerCoach.ActivePolitMon;
+
+        List<PolitMon> enemies = CreateEnemies(playerCoach, player);
+
+        ShowEnemies(enemies);
+
+        bool continueG = true;
+
+        while (continueG)
+        {
+            foreach (PolitMon opponent in enemies)
+            {
+                bool won = Fight(player, opponent);
+
+                if (!won)
+                {
+                    Console.WriteLine("You lost!");
+                    return;
+                }
+
+                Reward(player);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("You defeated all opponents!");
+            Console.WriteLine("You are the champion!");
+            Console.WriteLine("Do you want to continue?");
+            Console.WriteLine("1 - Finish game");
+            Console.WriteLine("2 - Continue with stronger enemies");
+
+            string finalChoice = Console.ReadLine();
+
+            if (finalChoice == "1")
+            {
+                continueG = false;
+                Console.WriteLine("Game finished!");
+            }
+            else
+            {
+                MakeStronger(enemies);
+                Console.WriteLine("Enemies became stronger!");
+                ShowEnemies(enemies);
+            }
+        }
+    }
+             
+    static Coach CreateCoach()
+    {
         Attack bombing = new Attack("Bombing", 10, "He just loves to bomb countries.");
         Attack sanctions = new Attack("Sanctions", 25, "Economic pressure attack.");
 
@@ -33,12 +85,17 @@ class Program
         playerCoach.AddPolitMon(putin);
         playerCoach.AddPolitMon(netanyahu);
 
+        return playerCoach;
+    }
+
+    static void ChoosePlayer(Coach playerCoach)
+    {
         Console.WriteLine();
         Console.WriteLine("Choose your PolitMon:");
         Console.WriteLine("1 - Donald Trump");
-        Console.WriteLine("2 - Volodymyr Zelensky");
+        Console.WriteLine("2 - Volodymyr Zelenskyi");
         Console.WriteLine("3 - Vladimir Putin");
-        Console.WriteLine("4 - Tomio Okamura");
+        Console.WriteLine("4 - Benjamin Netanyahu");
 
         string choice = Console.ReadLine();
 
@@ -58,9 +115,10 @@ class Program
         {
             playerCoach.SelectPolitMon(3);
         }
+    }
 
-        PolitMon player = playerCoach.ActivePolitMon;
-
+    static List<PolitMon> CreateEnemies(Coach playerCoach, PolitMon player)
+    {
         List<PolitMon> enemies = new List<PolitMon>();
 
         foreach (PolitMon politmon in playerCoach.PolitMons)
@@ -71,166 +129,150 @@ class Program
             }
         }
 
-        bool continueg = true;
+        return enemies;
+    }
 
-        while (continueg)
+    static bool Fight(PolitMon player, PolitMon opponent)
+    {
+        Console.WriteLine();
+        Console.WriteLine("Next opponent is: " + opponent.Name);
+
+        player.Health = player.MaxHealth;
+        opponent.Health = opponent.MaxHealth;
+
+        player.HealUse = false;
+        player.SpecialUse = false;
+
+        while (player.IsAlive() && opponent.IsAlive())
         {
-            foreach (PolitMon opponent in enemies)
+            Console.WriteLine();
+            Console.WriteLine("--- YOUR TURN ---");
+            Console.WriteLine("1 - Basic attack");
+            Console.WriteLine("2 - Special attack");
+            Console.WriteLine("3 - Heal");
+
+            string attackChoice = Console.ReadLine();
+
+            if (attackChoice == "1")
             {
-                Console.WriteLine();
-                Console.WriteLine("Next opponent is: " + opponent.Name);
-
-                player.Health = player.MaxHealth;
-                opponent.Health = opponent.MaxHealth;
-                player.HealUse = false;
+                player.UseBaseAttack(opponent);
                 player.SpecialUse = false;
-
-                while (player.IsAlive() && opponent.IsAlive())
+            }
+            else if (attackChoice == "2")
+            {
+                if (!player.SpecialUse)
                 {
-                    Console.WriteLine();
-                    Console.WriteLine("--- YOUR TURN ---");
-                    Console.WriteLine("1 - Basic attack");
-                    Console.WriteLine("2 - Special attack");
-                    Console.WriteLine("3 - Heal");
-
-                    string attackChoice = Console.ReadLine();
-                    string secondChoice = "0";
-
-                    if (attackChoice == "1")
-                    {
-                        player.UseBaseAttack(opponent);
-                    }
-                    else if (attackChoice == "2")
-                    {
-                        if (!player.SpecialUse)
-                        {
-                            player.UseSpecialAttack(opponent);
-                            player.SpecialUse = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Special attack is recharging!");
-                            Console.WriteLine("Try something else: 1 - Basic attack; 2 - Heal");
-
-                            secondChoice = Console.ReadLine();
-
-                            if (secondChoice == "1")
-                            {
-                                player.UseBaseAttack(opponent);
-                            }
-                            else if (secondChoice == "2")
-                            {
-                                if (!player.HealUse)
-                                {
-                                    player.Heal(20);
-                                    player.HealUse = true;
-                                    Console.WriteLine(player.Name + " healed 20 HP");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("You already used healing!");
-                                }
-                            }
-                        }
-                    }
-                    else if (attackChoice == "3")
-                    {
-                        if (!player.HealUse)
-                        {
-                            player.Heal(20);
-                            player.HealUse = true;
-                            Console.WriteLine(player.Name + " healed 20 HP");
-                        }
-                        else
-                        {
-                            Console.WriteLine("You already used healing!");
-                        }
-                    }
-
-                    if (opponent.IsAlive())
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("--- ENEMY TURN ---");
-
-                        int enemyChoice = random.Next(1, 4);
-
-                        if (enemyChoice == 1)
-                        {
-                            opponent.UseBaseAttack(player);
-                        }
-                        else if (enemyChoice == 2)
-                        {
-                            opponent.UseSpecialAttack(player);
-                        }
-                        else
-                        {
-                            opponent.Heal(20);
-                            Console.WriteLine(opponent.Name + " healed 20 HP");
-                        }
-                    }
-
-                    player.PrintInfo();
-                    opponent.PrintInfo();
-
-                    if (attackChoice == "1" || attackChoice == "3" || secondChoice == "1" || secondChoice == "2")
-                    {
-                        player.SpecialUse = false;
-                    }
-                }
-
-                if (player.IsAlive())
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("You defeated " + opponent.Name + "!");
-
-                    Console.WriteLine("Choose reward:");
-                    Console.WriteLine("1 - +10 Max HP");
-                    Console.WriteLine("2 - +2 Attack Bonus");
-
-                    string reward = Console.ReadLine();
-
-                    if (reward == "1")
-                    {
-                        player.MaxHealth += 10;
-                        player.Health = player.MaxHealth;
-                    }
-                    else
-                    {
-                        player.AttackBonus += 2;
-                    }
+                    player.UseSpecialAttack(opponent);
+                    player.SpecialUse = true;
                 }
                 else
                 {
-                    Console.WriteLine("You lost!");
-                    return;
+                    Console.WriteLine("Special attack is recharging!");
+                    Console.WriteLine("You use basic attack instead.");
+                    player.UseBaseAttack(opponent);
+                    player.SpecialUse = false;
                 }
             }
-
-            Console.WriteLine();
-            Console.WriteLine("You defeated all opponents!");
-            Console.WriteLine("You are the champion!");
-            Console.WriteLine("Do you want to continue?");
-            Console.WriteLine("1 - Finish game");
-            Console.WriteLine("2 - Continue with stronger enemies");
-
-            string finalChoice = Console.ReadLine();
-
-            if (finalChoice == "1")
+            else if (attackChoice == "3")
             {
-                continueg = false;
-                Console.WriteLine("Game finished!");
+                if (!player.HealUse)
+                {
+                    player.Heal(20);
+                    player.HealUse = true;
+                    Console.WriteLine(player.Name + " healed 20 HP");
+                    Console.WriteLine("Be careful, you can't use it anymore in this fight");
+                }
+                else
+                {
+                    Console.WriteLine("You already used healing!");
+                    Console.WriteLine("You lose your turn");
+                }
+
+                player.SpecialUse = false;
             }
             else
             {
-                foreach (PolitMon enemy in enemies)
-                {
-                    enemy.MaxHealth += 20;
-                    enemy.Health = enemy.MaxHealth;
-                    enemy.AttackBonus += 3;
-                }
-
-                Console.WriteLine("Enemies became stronger!");
+                Console.WriteLine("Wrong choice. You lost your turn.");
             }
+
+            if (opponent.IsAlive())
+            {
+                Console.WriteLine();
+                Console.WriteLine("--- ENEMY TURN ---");
+
+                int enemyChoice = random.Next(1, 4);
+
+                if (enemyChoice == 1)
+                {
+                    opponent.UseBaseAttack(player);
+                }
+                else if (enemyChoice == 2)
+                {
+                    opponent.UseSpecialAttack(player);
+                }
+                else
+                {
+                    opponent.Heal(20);
+                    Console.WriteLine(opponent.Name + " healed 20 HP");
+                }
+            }
+
+            player.PrintInfo();
+            opponent.PrintInfo();
         }
+
+        if (player.IsAlive())
+        {
+            Console.WriteLine();
+            Console.WriteLine("You defeated " + opponent.Name + "!");
+            return true;
+        }
+
+        return false;
+    }
+    static void Reward(PolitMon player)
+    {
+        Console.WriteLine("Choose reward:");
+        Console.WriteLine("1 - +10 Max HP");
+        Console.WriteLine("2 - +2 Attack Bonus");
+
+        string reward = Console.ReadLine();
+
+        if (reward == "1")
+        {
+            player.MaxHealth += 10;
+            player.Health = player.MaxHealth;
+        }
+        else
+        {
+            player.AttackBonus += 2;
+        }
+    }
+
+    static void MakeStronger(List<PolitMon> enemies)
+    {
+        foreach (PolitMon enemy in enemies)
+        {
+            enemy.MaxHealth += 20;
+            enemy.Health = enemy.MaxHealth;
+            enemy.AttackBonus += 3;
+        }
+    }
+    static void ShowEnemies(List<PolitMon> enemies)
+    {
+        Console.WriteLine();
+        Console.WriteLine("Your opponents:");
+
+        foreach (PolitMon enemy in enemies)
+        {
+            Console.WriteLine("--------------------");
+            Console.WriteLine("Name: " + enemy.Name);
+            Console.WriteLine("HP: " + enemy.MaxHealth);
+            Console.WriteLine("Attack bonus: " + enemy.AttackBonus);
+            Console.WriteLine("Basic attack: " + enemy.BaseAttack.Name + " - " + enemy.BaseAttack.Info);
+            Console.WriteLine("Special attack: " + enemy.SpecialAttack.Name +  " - " + enemy.SpecialAttack.Info);
+        }
+
+        Console.WriteLine("--------------------");
     }
 }
